@@ -182,26 +182,38 @@ void end_to_start() {
 // Output:
 // Linked List: 1->2->3->6->7->8
 
-void deleteNodefrom(int m,int n){
-    int count_m=0;
-    int count_n=0;
-    Node* prev = nullptr;
+void deleteNodefrom(int m, int n) {
+    if (head == nullptr) return;
+
     Node* temp = head;
-    while(temp!=nullptr){
-        prev = temp;
-        temp = temp->next;
+    Node* prev = nullptr;
+    int count_m = 0, count_n = 0;
+
+    while (temp != nullptr) {
         count_m++;
         count_n++;
-        if(count_m==m){
-            prev->next = temp->next;
-            count_m=0;
-        }
-        if(count_n==n){
-            prev->next = temp->next;
-            count_n=0;
+        
+        if ((count_m == m) || (count_n == n)) {
+            if (prev == nullptr) {
+                // Deleting head node
+                head = temp->next;
+                delete temp;
+                temp = head;
+            } else {
+                prev->next = temp->next;
+                delete temp;
+                temp = prev->next;
+            }
+            
+            if (count_m == m) count_m = 0;
+            if (count_n == n) count_n = 0;
+        } else {
+            prev = temp;
+            temp = temp->next;
         }
     }
 }
+
 //     16.Write a GetNth() function that takes a linked list and an integer index and returns the data value stored in the node at that index position. 
 // Input:  1->10->30->14,  index = 2
 // Output: 30  
@@ -232,8 +244,7 @@ int main() {
     l1.push_back(10);
 
 
-    // l1.deleteNodefrom(4,2);
+    l1.deleteNodefrom(0,1);
     l1.print();
-    l1.GetNth(2);
     return 0;
 }
